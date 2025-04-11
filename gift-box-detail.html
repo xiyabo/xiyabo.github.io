@@ -13,6 +13,7 @@
         }
         h1 {
             color: #333;
+            margin-bottom: 20px;
         }
         .image-gallery {
             display: flex;
@@ -23,9 +24,11 @@
         .image-gallery img {
             margin: 10px;
             border-radius: 5px;
-            max-width: 200px;
+            max-width: 100%;
+            height: auto;
             cursor: pointer;
             transition: transform 0.2s;
+            flex: 1 1 200px; /* 自适应宽度 */
         }
         .image-gallery img:hover {
             transform: scale(1.05);
@@ -44,6 +47,13 @@
         }
         .back-button:hover {
             background-color: #0056b3;
+        }
+
+        /* 媒体查询 */
+        @media (max-width: 600px) {
+            .image-gallery img {
+                flex: 1 1 100%; /* 小屏幕时占满100%宽度 */
+            }
         }
     </style>
 </head>
