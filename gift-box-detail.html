@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>礼盒详情</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+            background-color: #f2f2f2;
+        }
+        h1 {
+            color: #333;
+        }
+        .image-gallery {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .image-gallery img {
+            margin: 10px;
+            border-radius: 5px;
+            max-width: 200px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .image-gallery img:hover {
+            transform: scale(1.05);
+        }
+        .back-button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<h1 id="gift-box-name"></h1>
+<div class="image-gallery" id="image-gallery"></div>
+<a href="chengxin.html" class="back-button">返回主页面</a>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const giftBoxId = urlParams.get('id');
+
+    const giftBoxes = [
+        { id: 1, name: '生日礼盒', images: ['images/b.jpg?text=生日礼盒1', 'images/c.jpg?text=生日礼盒2', 'images/d.jpg?text=生日礼盒3'] },
+        { id: 2, name: '节日礼盒', images: ['https://via.placeholder.com/200x150?text=节日礼盒1', 'https://via.placeholder.com/200x150?text=节日礼盒2', 'https://via.placeholder.com/200x150?text=节日礼盒3'] },
+        { id: 3, name: '婚礼礼盒', images: ['https://via.placeholder.com/200x150?text=婚礼礼盒1', 'https://via.placeholder.com/200x150?text=婚礼礼盒2', 'https://via.placeholder.com/200x150?text=婚礼礼盒3'] },
+        { id: 4, name: '感谢礼盒', images: ['https://via.placeholder.com/200x150?text=感谢礼盒1', 'https://via.placeholder.com/200x150?text=感谢礼盒2', 'https://via.placeholder.com/200x150?text=感谢礼盒3'] },
+        { id: 5, name: '圣诞礼盒', images: ['https://via.placeholder.com/200x150?text=圣诞礼盒1', 'https://via.placeholder.com/200x150?text=圣诞礼盒2', 'https://via.placeholder.com/200x150?text=圣诞礼盒3'] },
+        { id: 6, name: '母亲节礼盒', images: ['https://via.placeholder.com/200x150?text=母亲节礼盒1', 'https://via.placeholder.com/200x150?text=母亲节礼盒2', 'https://via.placeholder.com/200x150?text=母亲节礼盒3'] },
+        { id: 7, name: '父亲节礼盒', images: ['https://via.placeholder.com/200x150?text=父亲节礼盒1', 'https://via.placeholder.com/200x150?text=父亲节礼盒2', 'https://via.placeholder.com/200x150?text=父亲节礼盒3'] },
+        { id: 8, name: '情人节礼盒', images: ['https://via.placeholder.com/200x150?text=情人节礼盒1', 'https://via.placeholder.com/200x150?text=情人节礼盒2', 'https://via.placeholder.com/200x150?text=情人节礼盒3'] },
+        { id: 9, name: '新年礼盒', images: ['https://via.placeholder.com/200x150?text=新年礼盒1', 'https://via.placeholder.com/200x150?text=新年礼盒2', 'https://via.placeholder.com/200x150?text=新年礼盒3'] },
+        { id: 10, name: '毕业礼盒', images: ['https://via.placeholder.com/200x150?text=毕业礼盒1', 'https://via.placeholder.com/200x150?text=毕业礼盒2', 'https://via.placeholder.com/200x150?text=毕业礼盒3'] },
+    ];
+
+    const giftBox = giftBoxes.find(box => box.id == giftBoxId);
+    if (giftBox) {
+        document.getElementById('gift-box-name').textContent = giftBox.name;
+        const imageGallery = document.getElementById('image-gallery');
+        giftBox.images.forEach(image => {
+            const img = document.createElement('img');
+            img.src = image;
+            img.alt = giftBox.name;
+            imageGallery.appendChild(img);
+        });
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>礼盒展示</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f2f2f2;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .gift-box {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            background-color: white;
+            display: inline-block;
+            width: 200px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .gift-box img {
+            max-width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        .pagination button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<h1>礼盒展示</h1>
+<div class="search-container">
+    <input type="text" id="search" placeholder="搜索礼盒名称">
+    <button onclick="searchGiftBoxes()">搜索</button>
+</div>
+
+<div id="gift-boxes"></div>
+<div class="pagination" id="pagination"></div>
+
+
+<script>
+    const giftBoxes = [
+        { id: 1, name: '生日礼盒', image: 'images/b.jpg?text=生日礼盒' },
+        { id: 2, name: '节日礼盒', image: 'https://via.placeholder.com/200x150?text=节日礼盒' },
+        { id: 3, name: '婚礼礼盒', image: 'https://via.placeholder.com/200x150?text=婚礼礼盒' },
+        { id: 4, name: '感谢礼盒', image: 'https://via.placeholder.com/200x150?text=感谢礼盒' },
+        { id: 5, name: '圣诞礼盒', image: 'https://via.placeholder.com/200x150?text=圣诞礼盒' },
+        { id: 6, name: '母亲节礼盒', image: 'https://via.placeholder.com/200x150?text=母亲节礼盒' },
+        { id: 7, name: '父亲节礼盒', image: 'https://via.placeholder.com/200x150?text=父亲节礼盒' },
+        { id: 8, name: '情人节礼盒', image: 'https://via.placeholder.com/200x150?text=情人节礼盒' },
+        { id: 9, name: '新年礼盒', image: 'https://via.placeholder.com/200x150?text=新年礼盒' },
+        { id: 10, name: '毕业礼盒', image: 'https://via.placeholder.com/200x150?text=毕业礼盒' },
+    ];
+
+    let currentPage = 1;
+    const itemsPerPage = 3;
+
+    function displayGiftBoxes(page) {
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const boxesToDisplay = giftBoxes.slice(start, end);
+
+        const giftBoxesDiv = document.getElementById('gift-boxes');
+        giftBoxesDiv.innerHTML = '';
+        boxesToDisplay.forEach(box => {
+            const boxDiv = document.createElement('div');
+            boxDiv.className = 'gift-box';
+            boxDiv.innerHTML = `
+                <img src="${box.image}" alt="${box.name}" onclick="location.href='gift-box-detail.html?id=${box.id}'">
+                <h3>${box.name}</h3>
+            `;
+            giftBoxesDiv.appendChild(boxDiv);
+        });
+
+        updatePagination();
+    }
+
+    function updatePagination() {
+        const paginationDiv = document.getElementById('pagination');
+        paginationDiv.innerHTML = '';
+
+        const totalPages = Math.ceil(giftBoxes.length / itemsPerPage);
+        for (let i = 1; i <= totalPages; i++) {
+            const button = document.createElement('button');
+            button.textContent = i;
+            button.onclick = () => {
+                currentPage = i;
+                displayGiftBoxes(currentPage);
+            };
+            paginationDiv.appendChild(button);
+        }
+    }
+
+    function searchGiftBoxes() {
+        const input = document.getElementById('search').value.toLowerCase();
+        const filteredBoxes = giftBoxes.filter(box => box.name.toLowerCase().includes(input));
+
+        const giftBoxesDiv = document.getElementById('gift-boxes');
+        giftBoxesDiv.innerHTML = '';
+        filteredBoxes.forEach(box => {
+            const boxDiv = document.createElement('div');
+            boxDiv.className = 'gift-box';
+            boxDiv.innerHTML = `
+                <img src="${box.image}" alt="${box.name}" onclick="location.href='gift-box-detail.html?id=${box.id}'">
+                <h3>${box.name}</h3>
+            `;
+            giftBoxesDiv.appendChild(boxDiv);
+        });
+
+        // 更新分页
+        const paginationDiv = document.getElementById('pagination');
+        paginationDiv.innerHTML = '';
+        const totalPages = Math.ceil(filteredBoxes.length / itemsPerPage);
+        for (let i = 1; i <= totalPages; i++) {
+            const button = document.createElement('button');
+            button.textContent = i;
+            button.onclick = () => {
+                currentPage = i;
+                displayFilteredGiftBoxes(filteredBoxes, currentPage);
+            };
+            paginationDiv.appendChild(button);
+        }
+    }
+
+    function displayFilteredGiftBoxes(filteredBoxes, page) {
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const boxesToDisplay = filteredBoxes.slice(start, end);
+
+        const giftBoxesDiv = document.getElementById('gift-boxes');
+        giftBoxesDiv.innerHTML = '';
+        boxesToDisplay.forEach(box => {
+            const boxDiv = document.createElement('div');
+            boxDiv.className = 'gift-box';
+            boxDiv.innerHTML = `
+                <img src="${box.image}" alt="${box.name}" onclick="location.href='gift-box-detail.html?id=${box.id}'">
+                <h3>${box.name}</h3>
+            `;
+            giftBoxesDiv.appendChild(boxDiv);
+        });
+    }
+
+    // 初始加载
+    displayGiftBoxes(currentPage);
+</script>
+
+</body>
+</html>
