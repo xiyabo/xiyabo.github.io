@@ -13,6 +13,7 @@
         h1 {
             text-align: center;
             color: #333;
+            margin-bottom: 20px;
         }
         .search-container {
             text-align: center;
@@ -42,15 +43,21 @@
             padding: 10px;
             margin: 10px;
             background-color: white;
-            display: inline-block;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             width: 200px;
-            text-align: center;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
         }
         .gift-box img {
             max-width: 100%;
             border-radius: 5px;
             cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .gift-box:hover {
+            transform: scale(1.05);
         }
         .pagination {
             text-align: center;
@@ -68,6 +75,23 @@
         .pagination button:hover {
             background-color: #0056b3;
         }
+
+        /* 自适应布局 */
+        .gift-box-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* 媒体查询 */
+        @media (max-width: 600px) {
+            .gift-box {
+                width: 100%; /* 小屏幕时占满100%宽度 */
+            }
+            input[type="text"] {
+                width: 80%; /* 搜索框在小屏幕上占80%宽度 */
+            }
+        }
     </style>
 </head>
 <body>
@@ -78,9 +102,8 @@
     <button onclick="searchGiftBoxes()">搜索</button>
 </div>
 
-<div id="gift-boxes"></div>
+<div class="gift-box-container" id="gift-boxes"></div>
 <div class="pagination" id="pagination"></div>
-
 
 <script>
     const giftBoxes = [
