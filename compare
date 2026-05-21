@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>五店铺报表解析与对比系统</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+  <style>
+    body { font-family: "PingFang SC","Microsoft YaHei",sans-serif; }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-slate-100 via-white to-blue-100 p-6">
+
+<div class="max-w-7xl mx-auto space-y-6">
+
+  <!-- 上传区 -->
+  <div class="bg-white rounded-3xl shadow-xl p-6">
+    <h1 class="text-2xl font-bold mb-2">五店铺报表解析系统</h1>
+    <p class="text-slate-500 mb-4">上传Excel或CSV，自动识别店铺并归类到对应栏</p>
+
+    <input id="fileInput" type="file" multiple class="border p-3 rounded-xl w-full" />
+
+    <button onclick="handleFiles()" class="mt-4 bg-blue-600 text-white px-6 py-3 rounded-xl">
+      解析文件
+    </button>
+  </div>
+
+  <!-- 五店铺栏 -->
+  <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+    <div class="bg-white p-4 rounded-2xl shadow" id="store1">
+      <h2 class="font-bold">项城1店</h2>
+      <div class="text-sm text-slate-500" id="list1"></div>
+    </div>
+
+    <div class="bg-white p-4 rounded-2xl shadow" id="store2">
+      <h2 class="font-bold">项城2店</h2>
+      <div class="text-sm text-slate-500" id="list2"></div>
+    </div>
+
+    <div class="bg-white p-4 rounded-2xl shadow" id="store3">
+      <h2 class="font-bold">项城3店</h2>
+      <div class="text-sm text-slate-500" id="list3"></div>
+    </div>
+
+    <div class="bg-white p-4 rounded-2xl shadow" id="store4">
+      <h2 class="font-bold">项城4店</h2>
+      <div class="text-sm text-slate-500" id="list4"></div>
+    </div>
+
+    <div class="bg-white p-4 rounded-2xl shadow" id="store5">
+      <h2 class="font-bold">项城5店</h2>
+      <div class="text-sm text-slate-500" id="list5"></div>
+    </div>
+  </div>
+
+  <!-- 对比图 -->
+  <div class="bg-white p-6 rounded-3xl shadow-xl">
+    <h2 class="text-xl font-bold mb-4">五店铺利润对比图</h2>
+    <canvas id="chart"></canvas>
+  </div>
+
+</div>
+
+<script>
+let storeData = {
+  "项城1店": [],
+  "项城2店": [],
+  "项城3店": [],
+  "项城4店": [],
+  "项城5店": []
+};
+
+let chart;
+
+function handleFiles(){
+  const files = document.getElementById('fileInput').files;
+
+  Array.from(files).forEach(file => {
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+      const data = new Uint8Array(e.target.result);
+      const wb = XLSX.read(data, {type:'array'});
+
+      const sheet = wb.Sheets[wb.SheetNames[0]];
+      const json = XLSX.utils.sheet_to_json(sheet);
+
+      json.forEach(row => {
+        const store = row.store || row.店铺 || "项城1店";
+
+        if(!storeData[store]) storeData[store] = [];
+        storeData[store].push(row);
+      });
+
+      renderUI();
+    };
+
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+function calcProfit(list){
+  let total = 0;
+  list.forEach(i => {
+    total += Number(i.profit || i.利润 || 0);
+  });
+  return total;
+}
+
+function renderUI(){
+  for(let i=1;i<=5;i++){
+    const key = `项城${i}店`;
+    const list = document.getElementById(`list${i}`);
+
+    list.innerHTML = storeData[key]
+      .slice(-5)
+      .map(x => `月:${x.month || x.月份 || '-'} 利润:${x.profit || x.利润 || 0}`)
+      .join('<br>');
+  }
+
+  const labels = Object.keys(storeData);
+  const data = labels.map(k => calcProfit(storeData[k]));
+
+  if(chart) chart.destroy();
+
+  chart = new Chart(document.getElementById('chart'), {
+    type:'bar',
+    data:{
+      labels,
+      datasets:[{
+        label:'店铺利润对比',
+        data
+      }]
+    }
+  });
+}
+
+</script>
+
+</body>
+</html>
