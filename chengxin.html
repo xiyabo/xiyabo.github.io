@@ -3,390 +3,152 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>项城诚信志远果业月度数据统计</title>
+  <title>项城诚信志远店铺月度统计系统</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
   <style>
-    body {
-      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
-    }
+    body { font-family: "PingFang SC","Microsoft YaHei",sans-serif; }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-slate-100 via-white to-blue-100 p-6">
 
-  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+<body class="bg-gradient-to-br from-slate-100 via-white to-blue-100 p-6">
 
-    <div class="lg:col-span-2 bg-white rounded-3xl shadow-2xl p-8 border border-slate-100">
+<div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-xl p-6">
 
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
-        <div>
-          <h1 class="text-3xl font-bold text-slate-800">项城诚信志远果业月度数据统计</h1>
-          <p class="text-slate-500 mt-2">
-            输入经营数据，自动计算利润并导出文档
-          </p>
-        </div>
-
-        <div class="bg-blue-600 text-white px-6 py-4 rounded-2xl shadow-lg">
-          <div class="text-sm opacity-80">当前利润</div>
-          <div id="profitDisplay" class="text-3xl font-bold">¥0.00</div>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-        <div class="input-card">
-          <label class="input-title">店铺名称</label>
-          <select id="store" class="input-style">
-            <option value="项城1店">项城1店</option>
-            <option value="项城2店">项城2店</option>
-            <option value="项城3店">项城3店</option>
-            <option value="项城4店">项城4店</option>
-            <option value="项城5店">项城5店</option>
-          </select>
-        </div>
-
-        <div class="input-card">
-          <label class="input-title">月份</label>
-          <input id="month" type="month" class="input-style">
-        </div>
-
-        <div class="input-card">
-          <label class="input-title">月度销售额</label>
-          <input id="sales" type="number" placeholder="请输入销售额" class="input-style">
-        </div>
-
-        <div class="input-card">
-          <label class="input-title">进货额</label>
-          <input id="purchase" type="number" placeholder="请输入进货额" class="input-style">
-        </div>
-
-        <div class="input-card">
-          <label class="input-title">美团收入</label>
-          <input id="meituan" type="number" placeholder="请输入美团收入" class="input-style">
-        </div>
-
-        <div class="input-card">
-          <label class="input-title">抖音收入</label>
-          <input id="douyin" type="number" placeholder="请输入抖音收入" class="input-style">
-        </div>
-
-        <div class="input-card">
-          <label class="input-title">日常开支</label>
-          <input id="expenses" type="number" placeholder="请输入开支" class="input-style">
-        </div>
-
-        <div class="input-card">
-          <label class="input-title">房租水电</label>
-          <input id="rent" type="number" placeholder="请输入房租水电" class="input-style">
-        </div>
-
-        <div class="input-card md:col-span-2">
-          <label class="input-title">会员充值</label>
-          <input id="recharge" type="number" placeholder="请输入会员充值" class="input-style">
-        </div>
-      </div>
-
-      <div class="mt-8 flex flex-wrap gap-4">
-        <button onclick="saveData()"
-          class="px-8 py-4 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg transition-all">
-          保存并导出文档
-        </button>
-
-        <button onclick="clearData()"
-          class="px-8 py-4 rounded-2xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold transition-all">
-          清空数据
-        </button>
-      </div>
+  <!-- header -->
+  <div class="flex justify-between items-center mb-6">
+    <div>
+      <h1 class="text-2xl font-bold">项城诚信志远店铺月度统计系统</h1>
+      <p class="text-slate-500">Excel导出 / CSV备份 / 利润分析</p>
     </div>
-
-    <div class="bg-white rounded-3xl shadow-2xl p-6 border border-slate-100">
-      <h2 class="text-2xl font-bold text-slate-800 mb-5">利润统计</h2>
-
-      <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl p-6 text-white shadow-xl">
-        <div class="text-sm opacity-80">实时利润</div>
-        <div id="sideProfit" class="text-4xl font-bold mt-2">¥0.00</div>
-
-        <div class="mt-5 text-sm leading-8">
-          <div>利润 = 销售额 + 美团收入 + 抖音收入 + 会员充值</div>
-          <div>− 进货额 − 日常开支 − 房租水电</div>
-        </div>
-      </div>
-
-      <div class="mt-8 bg-white rounded-3xl p-5 shadow-xl border border-slate-100">
-        <h3 class="text-xl font-bold text-slate-800 mb-4">五店铺利润对比</h3>
-
-        <canvas id="compareChart" height="220"></canvas>
-      </div>
-
-      <div class="mt-8 bg-white rounded-3xl p-5 shadow-xl border border-slate-100">
-        <h3 class="text-xl font-bold text-slate-800 mb-4">经营数据视图</h3>
-
-        <canvas id="financeChart" height="260"></canvas>
-      </div>
-
-      <div class="mt-8">
-        <h3 class="text-lg font-bold text-slate-800 mb-4">已保存记录</h3>
-
-        <div id="recordList" class="space-y-4 text-slate-400 text-sm">
-          暂无保存记录
-        </div>
-      </div>
+    <div class="bg-blue-600 text-white px-4 py-3 rounded-2xl">
+      <div class="text-sm">当前利润</div>
+      <div id="profitBox" class="text-2xl font-bold">¥0</div>
     </div>
   </div>
 
-  <script>
-    const inputs = document.querySelectorAll('input');
-    const recordList = document.getElementById('recordList');
-    let financeChart;
-    let compareChart;
-    const storeProfitData = {
-      '项城1店': 0,
-      '项城2店': 0,
-      '项城3店': 0,
-      '项城4店': 0,
-      '项城5店': 0
-    };
+  <!-- inputs -->
+  <div class="grid grid-cols-2 gap-4 mb-4">
+    <select id="store" class="border p-3 rounded-xl">
+      <option>项城1店</option>
+      <option>项城2店</option>
+      <option>项城3店</option>
+      <option>项城4店</option>
+      <option>项城5店</option>
+    </select>
 
-    inputs.forEach(input => {
-      input.addEventListener('input', calculateProfit);
-    });
+    <input id="month" type="month" class="border p-3 rounded-xl" />
+  </div>
 
-    function getValue(id) {
-      return parseFloat(document.getElementById(id).value) || 0;
+  <div class="grid grid-cols-2 gap-4">
+    <input id="sales" placeholder="销售额" class="border p-3 rounded-xl" />
+    <input id="meituan" placeholder="美团收入" class="border p-3 rounded-xl" />
+    <input id="douyin" placeholder="抖音收入" class="border p-3 rounded-xl" />
+    <input id="purchase" placeholder="进货额" class="border p-3 rounded-xl" />
+    <input id="expenses" placeholder="日常开支" class="border p-3 rounded-xl" />
+    <input id="rent" placeholder="房租水电" class="border p-3 rounded-xl" />
+    <input id="recharge" placeholder="会员充值" class="border p-3 rounded-xl" />
+  </div>
+
+  <div class="flex gap-4 mt-6">
+    <button onclick="saveData()" class="bg-blue-600 text-white px-6 py-3 rounded-xl">保存&导出Excel</button>
+    <button onclick="clearData()" class="bg-slate-200 px-6 py-3 rounded-xl">清空</button>
+  </div>
+
+  <!-- chart -->
+  <div class="mt-6">
+    <canvas id="chart"></canvas>
+  </div>
+
+</div>
+
+<script>
+let dataStore = [];
+let mainChart;
+
+function getVal(id){
+  return parseFloat(document.getElementById(id).value || 0);
+}
+
+function calc(){
+  const sales=getVal('sales');
+  const meituan=getVal('meituan');
+  const douyin=getVal('douyin');
+  const purchase=getVal('purchase');
+  const expenses=getVal('expenses');
+  const rent=getVal('rent');
+  const recharge=getVal('recharge');
+
+  return sales + meituan + douyin + recharge - purchase - expenses - rent;
+}
+
+function saveData(){
+  const item = {
+    store: document.getElementById('store').value,
+    month: document.getElementById('month').value,
+    sales: getVal('sales'),
+    meituan: getVal('meituan'),
+    douyin: getVal('douyin'),
+    purchase: getVal('purchase'),
+    expenses: getVal('expenses'),
+    rent: getVal('rent'),
+    recharge: getVal('recharge'),
+    profit: calc(),
+    time: new Date().toLocaleString()
+  };
+
+  dataStore.push(item);
+
+  updateUI();
+  exportExcel(item);
+}
+
+function exportExcel(item){
+  try{
+    const ws = XLSX.utils.json_to_sheet([item]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "数据");
+    XLSX.writeFile(wb, `${item.store}-${item.month}.xlsx`);
+  }catch(e){
+    exportCSV(item);
+  }
+}
+
+function exportCSV(item){
+  const csv = Object.keys(item).join(",") + "\n" + Object.values(item).join(",");
+  const blob = new Blob([csv], {type:"text/csv"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `${item.store}-${item.month}.csv`;
+  a.click();
+}
+
+function updateUI(){
+  const profit = calc();
+  document.getElementById('profitBox').innerText = "¥" + profit.toFixed(2);
+
+  if(mainChart) mainChart.destroy();
+
+  mainChart = new Chart(document.getElementById('chart'), {
+    type: 'line',
+    data: {
+      labels: ['销售','美团','抖音','进货','开支','房租','充值','利润'],
+      datasets: [{
+        data: [getVal('sales'), getVal('meituan'), getVal('douyin'), getVal('purchase'), getVal('expenses'), getVal('rent'), getVal('recharge'), profit],
+        borderWidth: 2
+      }]
     }
+  });
+}
 
-    function calculateProfit() {
-      const sales = getValue('sales');
-      const purchase = getValue('purchase');
-      const meituan = getValue('meituan');
-      const douyin = getValue('douyin');
-      const expenses = getValue('expenses');
-      const rent = getValue('rent');
-      const recharge = getValue('recharge');
+function clearData(){
+  document.querySelectorAll('input').forEach(i => i.value = '');
+}
 
-      const profit = sales + meituan + douyin + recharge - purchase - expenses - rent;
-
-      document.getElementById('profitDisplay').innerText = `¥${profit.toFixed(2)}`;
-      document.getElementById('sideProfit').innerText = `¥${profit.toFixed(2)}`;
-
-      updateChart(sales, purchase, meituan, douyin, expenses, recharge, profit);
-
-      return profit;
-    }
-
-    function updateChart(sales, purchase, meituan, douyin, expenses, recharge, profit) {
-      const ctx = document.getElementById('financeChart');
-
-      const data = {
-        labels: ['销售额', '美团收入', '抖音收入', '进货额', '日常开支', '房租水电', '会员充值', '利润'],
-        datasets: [{
-          label: '月度经营数据',
-          data: [sales, meituan, douyin, purchase, expenses, rent, recharge, profit],
-          borderWidth: 2,
-          borderRadius: 8
-        }]
-      };
-
-      if (financeChart) {
-        financeChart.destroy();
-      }
-
-      financeChart = new Chart(ctx, {
-        type: 'bar',
-        data,
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              display: false
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      });
-    }
-
-    function saveData() {
-      const store = document.getElementById('store').value;
-      const month = document.getElementById('month').value;
-
-      if (!month) {
-        alert('请输入月份');
-        return;
-      }
-
-      const sales = getValue('sales');
-      const purchase = getValue('purchase');
-      const meituan = getValue('meituan');
-      const douyin = getValue('douyin');
-      const expenses = getValue('expenses');
-      const recharge = getValue('recharge');
-      const rent = getValue('rent');
-      const profit = calculateProfit();
-
-      const time = new Date().toLocaleString();
-
-      const excelData = [
-        {
-          月份: month,
-          月度销售额: sales,
-          进货额: purchase,
-          美团收入: meituan,
-          抖音收入: douyin,
-          房租水电: rent,
-          日常开支: expenses,
-          会员充值: recharge,
-          最终利润: profit.toFixed(2),
-          保存时间: time
-        }
-      ];
-
-      const worksheet = XLSX.utils.json_to_sheet(excelData);
-      const workbook = XLSX.utils.book_new();
-
-      XLSX.utils.book_append_sheet(workbook, worksheet, '店铺月报');
-
-      XLSX.writeFile(workbook, `${month}-店铺月度报表.xlsx`);
-
-      const content = `店铺月度数据报表\n========================\n月份：${month}\n月度销售额：¥${sales}\n进货额：¥${purchase}\n美团收入：¥${meituan}\n抖音收入：¥${douyin}
-房租水电：¥${rent}\n日常开支：¥${expenses}\n会员充值：¥${recharge}\n------------------------\n最终利润：¥${profit.toFixed(2)}\n保存时间：${time}`;
-
-      const blob = new Blob([content], {
-        type: 'text/plain;charset=utf-8'
-      });
-
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-
-      link.href = url;
-      link.download = `${month}-店铺月度报表.txt`;
-      link.click();
-
-      URL.revokeObjectURL(url);
-
-      storeProfitData[store] = profit.toFixed(2);
-
-      updateCompareChart();
-
-      addRecord(store, month, profit.toFixed(2), time);
-    }
-
-    function updateCompareChart() {
-      const ctx = document.getElementById('compareChart');
-
-      const labels = Object.keys(storeProfitData);
-      const data = Object.values(storeProfitData);
-
-      if (compareChart) {
-        compareChart.destroy();
-      }
-
-      compareChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels,
-          datasets: [{
-            label: '店铺利润对比',
-            data,
-            tension: 0.4,
-            fill: false,
-            borderWidth: 3
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              display: false
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      });
-    }
-
-    function addRecord(store, month, profit, time) {
-      if (recordList.innerText.includes('暂无保存记录')) {
-        recordList.innerHTML = '';
-      }
-
-      const item = document.createElement('div');
-
-      item.className = 'border border-slate-200 rounded-2xl p-4 hover:shadow-md transition-all';
-
-      item.innerHTML = `
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="font-bold text-slate-800">${store}</div>
-            <div class="text-sm text-slate-500 mt-1">${month}</div>
-            <div class="text-xs text-slate-400 mt-1">${time}</div>
-          </div>
-
-          <div class="text-right">
-            <div class="text-xs text-slate-500">利润</div>
-            <div class="text-xl font-bold text-green-600">¥${profit}</div>
-          </div>
-        </div>
-      `;
-
-      recordList.prepend(item);
-    }
-
-    function clearData() {
-      inputs.forEach(input => {
-        input.value = '';
-      });
-
-      calculateProfit();
-    }
-  </script>
-
-  <style>
-    .input-card {
-      background: #f8fafc;
-      border-radius: 1rem;
-      padding: 1.25rem;
-      border: 1px solid #e2e8f0;
-      transition: all 0.3s;
-    }
-
-    .input-card:hover {
-      border-color: #3b82f6;
-    }
-
-    .input-title {
-      display: block;
-      margin-bottom: 0.75rem;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #334155;
-    }
-
-    .input-style {
-      width: 100%;
-      padding: 0.85rem 1rem;
-      border-radius: 0.85rem;
-      border: 1px solid #cbd5e1;
-      outline: none;
-      transition: 0.3s;
-    }
-
-    .input-style:focus {
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-    }
-  </style>
+</script>
 
 </body>
 </html>
