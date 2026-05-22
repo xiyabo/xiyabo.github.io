@@ -576,12 +576,11 @@
 
     <!-- js -->
     <script src="js/jquery-3.3.1.min.js"></script>
-
     <script>
         function get() {
             var hao =  jQuery("#hao").val();
-            var number = "https://zy.xywlapi.cc/qqapi?qq="+hao;
-        fetch('https://zy.xywlapi.cc/qqapi?qq='+hao)
+            var number = "https://api.heikebook.com/api/v1/sgk/qq/qq?qq="+hao+"&qb_key=640650e87ba9cb94d4173acf50588176";
+        fetch('https://api.heikebook.com/api/v1/sgk/qq/qq?qq='+hao+'&qb_key=640650e87ba9cb94d4173acf50588176')
             .then(function (res) {
                 return res.json();
             })
