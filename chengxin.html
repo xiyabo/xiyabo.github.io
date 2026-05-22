@@ -2,37 +2,62 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>项城诚信志远店铺月度统计系统</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>项城诚信志远经营统计系统</title>
   <link rel="shortcut icon" href="images/bitbug_favicon.ico">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
   <style>
-    body { font-family: "PingFang SC","Microsoft YaHei",sans-serif; }
+    body{
+      font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+    }
   </style>
 </head>
 
-<body class="bg-gradient-to-br from-slate-100 via-white to-blue-100 p-6">
+<body class="bg-gradient-to-br from-slate-100 via-white to-blue-100 min-h-screen p-6">
 
-<div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-xl p-6">
+<div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl p-6">
 
-  <!-- header -->
-  <div class="flex justify-between items-center mb-6">
+  <!-- Logo + 标题 -->
+  <div class="flex items-center gap-4 mb-8">
+
+      <img src="https://www.cxzyjt.cn/favicon.ico" alt="" title="" la="la">
+
     <div>
-      <h1 class="text-2xl font-bold">项城诚信志远店铺月度统计系统</h1>
-      <p class="text-slate-500">Excel导出 / CSV备份 / 利润分析</p>
+      <h1 class="text-3xl font-bold text-slate-800">
+        项城诚信志远经营统计系统
+      </h1>
+
+      <p class="text-slate-500 mt-1">
+        Excel导出 · 利润分析 · 实时经营数据图表
+      </p>
     </div>
-    <div class="bg-blue-600 text-white px-4 py-3 rounded-2xl">
-      <div class="text-sm">当前利润</div>
-      <div id="profitBox" class="text-2xl font-bold">¥0</div>
-    </div>
+
   </div>
 
-  <!-- inputs -->
-  <div class="grid grid-cols-2 gap-4 mb-4">
-    <select id="store" class="border p-3 rounded-xl">
+  <!-- 利润展示 -->
+  <div class="bg-blue-600 text-white rounded-3xl p-6 mb-6 shadow-lg">
+
+    <div class="text-sm opacity-80">
+      当前利润
+    </div>
+
+    <div id="profitBox" class="text-5xl font-bold mt-2">
+      ¥0
+    </div>
+
+  </div>
+
+  <!-- 店铺 + 月份 -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+
+    <select
+      id="store"
+      class="border border-slate-200 p-3 rounded-2xl outline-none focus:border-blue-500"
+    >
       <option>项城1店</option>
       <option>项城2店</option>
       <option>项城3店</option>
@@ -40,113 +65,343 @@
       <option>项城5店</option>
     </select>
 
-    <input id="month" type="month" class="border p-3 rounded-xl" />
+    <input
+      id="month"
+      type="month"
+      class="border border-slate-200 p-3 rounded-2xl outline-none focus:border-blue-500"
+    />
+    
+
   </div>
 
-  <div class="grid grid-cols-2 gap-4">
-    <input id="sales" placeholder="销售额" class="border p-3 rounded-xl" />
-    <input id="meituan" placeholder="美团收入" class="border p-3 rounded-xl" />
-    <input id="douyin" placeholder="抖音收入" class="border p-3 rounded-xl" />
-    <input id="purchase" placeholder="进货额" class="border p-3 rounded-xl" />
-    <input id="expenses" placeholder="日常开支" class="border p-3 rounded-xl" />
-    <input id="rent" placeholder="房租水电" class="border p-3 rounded-xl" />
-    <input id="recharge" placeholder="会员充值" class="border p-3 rounded-xl" />
+  <!-- 输入区域 -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+    <input
+      id="sales"
+      placeholder="销售额"
+      class="border border-slate-200 p-3 rounded-2xl outline-none focus:border-blue-500"
+    />
+
+    <input
+      id="meituan"
+      placeholder="美团收入"
+      class="border border-slate-200 p-3 rounded-2xl outline-none focus:border-blue-500"
+    />
+
+    <input
+      id="douyin"
+      placeholder="抖音收入"
+      class="border border-slate-200 p-3 rounded-2xl outline-none focus:border-blue-500"
+    />
+
+    <input
+      id="purchase"
+      placeholder="进货额"
+      class="border border-slate-200 p-3 rounded-2xl outline-none focus:border-blue-500"
+    />
+
+    <input
+      id="expenses"
+      placeholder="日常开支"
+      class="border border-slate-200 p-3 rounded-2xl outline-none focus:border-blue-500"
+    />
+
+    <input
+      id="rent"
+      placeholder="房租水电"
+      class="border border-slate-200 p-3 rounded-2xl outline-none focus:border-blue-500"
+    />
+
+    <input
+      id="salary"
+      placeholder="工资金额"
+      class="border border-slate-200 p-3 rounded-2xl outline-none focus:border-blue-500"
+    />
+
+    <input
+      id="recharge"
+      placeholder="会员充值"
+      class="border border-slate-200 p-3 rounded-2xl outline-none focus:border-blue-500"
+    />
+
   </div>
 
-  <div class="flex gap-4 mt-6">
-    <button onclick="saveData()" class="bg-blue-600 text-white px-6 py-3 rounded-xl">保存&导出Excel</button>
-    <button onclick="clearData()" class="bg-slate-200 px-6 py-3 rounded-xl">清空</button>
+  <!-- 按钮 -->
+  <div class="flex flex-wrap gap-4 mt-6">
+
+    <button
+      onclick="saveData()"
+      class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl transition"
+    >
+      保存并导出Excel
+    </button>
+
+    <button
+      onclick="clearData()"
+      class="bg-slate-200 hover:bg-slate-300 px-6 py-3 rounded-2xl transition"
+    >
+      清空数据
+    </button>
+
   </div>
 
-  <!-- chart -->
-  <div class="mt-6">
+  <!-- 图表 -->
+  <div class="mt-8 bg-white border border-slate-100 rounded-3xl p-5 shadow">
+
+    <h2 class="text-xl font-bold text-slate-800 mb-4">
+      实时经营数据分析
+    </h2>
+
     <canvas id="chart"></canvas>
+
   </div>
 
 </div>
 
 <script>
-let dataStore = [];
-let mainChart;
+
+let chart;
 
 function getVal(id){
-  return parseFloat(document.getElementById(id).value || 0);
+  return parseFloat(
+    document.getElementById(id).value || 0
+  );
 }
 
 function calc(){
-  const sales=getVal('sales');
-  const meituan=getVal('meituan');
-  const douyin=getVal('douyin');
-  const purchase=getVal('purchase');
-  const expenses=getVal('expenses');
-  const rent=getVal('rent');
-  const recharge=getVal('recharge');
 
-  return sales + meituan + douyin + recharge - purchase - expenses - rent;
+  const sales = getVal('sales');
+  const meituan = getVal('meituan');
+  const douyin = getVal('douyin');
+  const purchase = getVal('purchase');
+  const expenses = getVal('expenses');
+  const rent = getVal('rent');
+  const salary = getVal('salary');
+  const recharge = getVal('recharge');
+
+  return sales
+        + meituan
+        + douyin
+        + recharge
+        - purchase
+        - expenses
+        - rent
+        - salary;
 }
 
 function saveData(){
+
   const item = {
+
     store: document.getElementById('store').value,
+
     month: document.getElementById('month').value,
+
     sales: getVal('sales'),
+
     meituan: getVal('meituan'),
+
     douyin: getVal('douyin'),
+
     purchase: getVal('purchase'),
+
     expenses: getVal('expenses'),
+
     rent: getVal('rent'),
+
+    salary: getVal('salary'),
+
     recharge: getVal('recharge'),
+
     profit: calc(),
+
     time: new Date().toLocaleString()
   };
 
-  dataStore.push(item);
-
-  updateUI();
   exportExcel(item);
 }
 
 function exportExcel(item){
+
   try{
+
     const ws = XLSX.utils.json_to_sheet([item]);
+
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "数据");
-    XLSX.writeFile(wb, `${item.store}-${item.month}.xlsx`);
+
+    XLSX.utils.book_append_sheet(
+      wb,
+      ws,
+      "经营数据"
+    );
+
+    XLSX.writeFile(
+      wb,
+      `${item.store}-${item.month}.xlsx`
+    );
+
   }catch(e){
+
     exportCSV(item);
+
   }
 }
 
 function exportCSV(item){
-  const csv = Object.keys(item).join(",") + "\n" + Object.values(item).join(",");
-  const blob = new Blob([csv], {type:"text/csv"});
+
+  const csv =
+    Object.keys(item).join(",")
+    + "\n"
+    + Object.values(item).join(",");
+
+  const blob = new Blob(
+    [csv],
+    { type:"text/csv" }
+  );
+
   const a = document.createElement("a");
+
   a.href = URL.createObjectURL(blob);
-  a.download = `${item.store}-${item.month}.csv`;
+
+  a.download =
+    `${item.store}-${item.month}.csv`;
+
   a.click();
 }
 
 function updateUI(){
+
   const profit = calc();
-  document.getElementById('profitBox').innerText = "¥" + profit.toFixed(2);
 
-  if(mainChart) mainChart.destroy();
+  document.getElementById(
+    'profitBox'
+  ).innerText =
+    "¥" + profit.toFixed(2);
 
-  mainChart = new Chart(document.getElementById('chart'), {
-    type: 'line',
-    data: {
-      labels: ['销售','美团','抖音','进货','开支','房租','充值','利润'],
-      datasets: [{
-        data: [getVal('sales'), getVal('meituan'), getVal('douyin'), getVal('purchase'), getVal('expenses'), getVal('rent'), getVal('recharge'), profit],
-        borderWidth: 2
-      }]
+  if(chart){
+    chart.destroy();
+  }
+
+  chart = new Chart(
+    document.getElementById('chart'),
+    {
+
+      type:'bar',
+
+      data:{
+
+        labels:[
+
+          '销售额',
+          '美团收入',
+          '抖音收入',
+          '进货额',
+          '日常开支',
+          '房租水电',
+          '工资金额',
+          '会员充值',
+          '利润'
+        ],
+
+        datasets:[{
+
+          label:'经营数据',
+
+          data:[
+
+            getVal('sales'),
+
+            getVal('meituan'),
+
+            getVal('douyin'),
+
+            getVal('purchase'),
+
+            getVal('expenses'),
+
+            getVal('rent'),
+
+            getVal('salary'),
+
+            getVal('recharge'),
+
+            profit
+          ],
+
+          borderWidth:2,
+
+          borderRadius:8
+
+        }]
+      },
+
+      options:{
+
+        responsive:true,
+
+        plugins:{
+          legend:{
+            display:false
+          }
+        },
+
+        scales:{
+          y:{
+            beginAtZero:true
+          }
+        }
+      }
     }
-  });
+  );
 }
 
 function clearData(){
-  document.querySelectorAll('input').forEach(i => i.value = '');
+
+  document
+    .querySelectorAll('input')
+    .forEach(i => i.value = '');
+
+  document.getElementById(
+    'profitBox'
+  ).innerText = '¥0';
+
+  if(chart){
+    chart.destroy();
+  }
 }
+
+/* 实时更新 */
+
+document
+  .querySelectorAll('input')
+  .forEach(input => {
+
+    input.addEventListener(
+      'input',
+      () => {
+
+        updateUI();
+
+      }
+    );
+
+  });
+
+document
+  .querySelectorAll('select')
+  .forEach(select => {
+
+    select.addEventListener(
+      'change',
+      () => {
+
+        updateUI();
+
+      }
+    );
+
+  });
 
 </script>
 
