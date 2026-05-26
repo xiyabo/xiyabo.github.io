@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MyFit - AI 3D试衣间</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#fff8f8;
+    color:#333;
+}
+
+/* 顶部导航 */
+
+.navbar{
+    width:100%;
+    height:80px;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 60px;
+    box-shadow:0 4px 20px rgba(255,192,203,0.08);
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.logo{
+    font-size:34px;
+    font-weight:700;
+    color:#ff6b9f;
+}
+
+.nav-links{
+    display:flex;
+    gap:40px;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:#666;
+    font-weight:500;
+    transition:0.3s;
+}
+
+.nav-links a:hover{
+    color:#ff6b9f;
+}
+
+.user-box{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.vip-btn{
+    background:linear-gradient(135deg,#ff7eb3,#ff4f87);
+    color:white;
+    border:none;
+    padding:12px 24px;
+    border-radius:30px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200');
+    background-size:cover;
+    background-position:center;
+}
+
+/* hero */
+
+.hero{
+    width:100%;
+    padding:60px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.hero-left{
+    width:45%;
+}
+
+.hero-left h1{
+    font-size:70px;
+    line-height:1.1;
+    margin-bottom:25px;
+}
+
+.hero-left h1 span{
+    color:#ff5f95;
+}
+
+.hero-left p{
+    font-size:18px;
+    color:#777;
+    line-height:1.8;
+    margin-bottom:35px;
+}
+
+.hero-btns{
+    display:flex;
+    gap:20px;
+}
+
+.primary-btn{
+    background:linear-gradient(135deg,#ff7eb3,#ff4f87);
+    color:white;
+    border:none;
+    padding:18px 36px;
+    border-radius:18px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.secondary-btn{
+    background:white;
+    border:1px solid #ffd2df;
+    padding:18px 36px;
+    border-radius:18px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* 中间人物 */
+
+.hero-right{
+    width:45%;
+    position:relative;
+}
+
+.hero-circle{
+    width:500px;
+    height:500px;
+    background:radial-gradient(circle,#ffe3ec,#fff8f8);
+    border-radius:50%;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.hero-circle img{
+    height:600px;
+    object-fit:contain;
+}
+
+/* 主体布局 */
+
+.main-container{
+    display:grid;
+    grid-template-columns:280px 1fr 340px;
+    gap:30px;
+    padding:0 60px 60px;
+}
+
+/* 卡片 */
+
+.card{
+    background:white;
+    border-radius:28px;
+    padding:25px;
+    box-shadow:0 10px 30px rgba(255,182,193,0.12);
+}
+
+/* 左边 */
+
+.profile-card img{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    margin-bottom:15px;
+}
+
+.profile-card h3{
+    margin-bottom:10px;
+}
+
+.data-list{
+    margin-top:25px;
+}
+
+.data-item{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:18px;
+    padding-bottom:12px;
+    border-bottom:1px solid #f5f5f5;
+}
+
+.update-btn{
+    width:100%;
+    margin-top:25px;
+    background:#fff0f5;
+    border:none;
+    height:52px;
+    border-radius:16px;
+    color:#ff5f95;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* 中间试衣 */
+
+.viewer-card{
+    position:relative;
+    min-height:850px;
+}
+
+.viewer-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:25px;
+}
+
+.viewer-tabs{
+    display:flex;
+    gap:20px;
+}
+
+.viewer-tabs button{
+    border:none;
+    background:none;
+    font-size:16px;
+    font-weight:600;
+    color:#999;
+    cursor:pointer;
+}
+
+.viewer-tabs button.active{
+    color:#ff5f95;
+}
+
+.viewer{
+    width:100%;
+    height:700px;
+    border-radius:24px;
+    background:#fff8fb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+.viewer img{
+    height:95%;
+}
+
+/* 右边上传 */
+
+.upload-box{
+    width:100%;
+    height:180px;
+    border:2px dashed #ffc7d8;
+    border-radius:24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    color:#999;
+    cursor:pointer;
+    margin-top:20px;
+}
+
+.plus{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:#fff0f5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:40px;
+    color:#ff5f95;
+    margin-bottom:15px;
+}
+
+.clothes-grid{
+    margin-top:30px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.clothes-item{
+    background:#fff7fa;
+    border-radius:18px;
+    overflow:hidden;
+    padding:10px;
+    transition:0.3s;
+    cursor:pointer;
+}
+
+.clothes-item:hover{
+    transform:translateY(-5px);
+}
+
+.clothes-item img{
+    width:100%;
+    border-radius:14px;
+}
+
+.try-btn{
+    width:100%;
+    height:58px;
+    border:none;
+    border-radius:18px;
+    margin-top:25px;
+    background:linear-gradient(135deg,#ff7eb3,#ff4f87);
+    color:white;
+    font-size:18px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* 试穿记录 */
+
+.history{
+    padding:0 60px 80px;
+}
+
+.history h2{
+    margin-bottom:30px;
+}
+
+.history-list{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:25px;
+}
+
+.history-item{
+    background:white;
+    border-radius:24px;
+    padding:15px;
+    box-shadow:0 10px 20px rgba(255,182,193,0.1);
+    transition:0.3s;
+}
+
+.history-item:hover{
+    transform:translateY(-6px);
+}
+
+.history-item img{
+    width:100%;
+    border-radius:18px;
+    margin-bottom:12px;
+}
+
+.history-item p{
+    color:#888;
+    font-size:14px;
+}
+
+/* 页脚 */
+
+.footer{
+    width:100%;
+    padding:40px 60px;
+    border-top:1px solid #f3e5ea;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:#999;
+}
+
+.socials{
+    display:flex;
+    gap:15px;
+}
+
+.social{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#fff0f5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#ff5f95;
+}
+
+/* 响应式 */
+
+@media(max-width:1200px){
+
+.main-container{
+    grid-template-columns:1fr;
+}
+
+.hero{
+    flex-direction:column;
+    text-align:center;
+    gap:50px;
+}
+
+.hero-left{
+    width:100%;
+}
+
+.hero-right{
+    width:100%;
+}
+
+.hero-btns{
+    justify-content:center;
+}
+
+.history-list{
+    grid-template-columns:repeat(2,1fr);
+}
+
+}
+
+@media(max-width:768px){
+
+.nav-links{
+    display:none;
+}
+
+.navbar{
+    padding:0 20px;
+}
+
+.hero{
+    padding:30px 20px;
+}
+
+.hero-left h1{
+    font-size:42px;
+}
+
+.main-container{
+    padding:0 20px 40px;
+}
+
+.history{
+    padding:0 20px 40px;
+}
+
+.history-list{
+    grid-template-columns:1fr;
+}
+
+.hero-circle{
+    width:320px;
+    height:320px;
+}
+
+.hero-circle img{
+    height:420px;
+}
+
+.footer{
+    padding:30px 20px;
+    flex-direction:column;
+    gap:20px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- 导航 -->
+
+<div class="navbar">
+
+    <div class="logo">MyFit</div>
+
+    <div class="nav-links">
+        <a href="#">首页</a>
+        <a href="#">我的3D形象</a>
+        <a href="#">AI试衣间</a>
+        <a href="#">穿搭社区</a>
+        <a href="#">灵感收藏</a>
+    </div>
+
+    <div class="user-box">
+        <button class="vip-btn">升级会员</button>
+        <div class="avatar"></div>
+    </div>
+
+</div>
+
+<!-- hero -->
+
+<section class="hero">
+
+    <div class="hero-left">
+
+        <h1>
+            你的专属<br>
+            <span>AI 3D试衣间</span>
+        </h1>
+
+        <p>
+            上传你的身高、体重与照片，
+            AI自动生成专属3D虚拟形象，
+            在线试穿各种风格服装。
+        </p>
+
+        <div class="hero-btns">
+            <button class="primary-btn">创建3D形象</button>
+            <button class="secondary-btn">了解更多</button>
+        </div>
+
+    </div>
+
+    <div class="hero-right">
+
+        <div class="hero-circle">
+
+            <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200">
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- 主区域 -->
+
+<section class="main-container">
+
+    <!-- 左边 -->
+
+    <div class="card profile-card">
+
+        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200">
+
+        <h3>小樱桃</h3>
+
+        <p style="color:#999;">已生成AI 3D形象</p>
+
+        <div class="data-list">
+
+            <div class="data-item">
+                <span>身高</span>
+                <span>165cm</span>
+            </div>
+
+            <div class="data-item">
+                <span>体重</span>
+                <span>50kg</span>
+            </div>
+
+            <div class="data-item">
+                <span>胸围</span>
+                <span>84cm</span>
+            </div>
+
+            <div class="data-item">
+                <span>腰围</span>
+                <span>63cm</span>
+            </div>
+
+            <div class="data-item">
+                <span>臀围</span>
+                <span>88cm</span>
+            </div>
+
+        </div>
+
+        <button class="update-btn">
+            更新身体数据
+        </button>
+
+    </div>
+
+    <!-- 中间 -->
+
+    <div class="card viewer-card">
+
+        <div class="viewer-header">
+
+            <div class="viewer-tabs">
+                <button class="active">3D试衣</button>
+                <button>测量视图</button>
+                <button>骨骼视图</button>
+            </div>
+
+        </div>
+
+        <div class="viewer">
+
+            <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1200">
+
+        </div>
+
+    </div>
+
+    <!-- 右边 -->
+
+    <div class="card">
+
+        <h2>上传衣服图片</h2>
+
+        <div class="upload-box">
+
+            <div class="plus">+</div>
+
+            <p>点击上传服装图片</p>
+
+        </div>
+
+        <div class="clothes-grid">
+
+            <div class="clothes-item">
+                <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600">
+            </div>
+
+            <div class="clothes-item">
+                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=600">
+            </div>
+
+            <div class="clothes-item">
+                <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=600">
+            </div>
+
+            <div class="clothes-item">
+                <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=600">
+            </div>
+
+        </div>
+
+        <button class="try-btn">
+            立即试穿
+        </button>
+
+    </div>
+
+</section>
+
+<!-- 试穿记录 -->
+
+<section class="history">
+
+    <h2>我的试穿记录</h2>
+
+    <div class="history-list">
+
+        <div class="history-item">
+            <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=800">
+            <p>甜美连衣裙</p>
+        </div>
+
+        <div class="history-item">
+            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800">
+            <p>法式上衣</p>
+        </div>
+
+        <div class="history-item">
+            <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800">
+            <p>轻熟风穿搭</p>
+        </div>
+
+        <div class="history-item">
+            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=800">
+            <p>日系学院风</p>
+        </div>
+
+        <div class="history-item">
+            <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=800">
+            <p>高级感外套</p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- footer -->
+
+<footer class="footer">
+
+    <div>
+        © 2026 MyFit AI Fashion
+    </div>
+
+    <div class="socials">
+
+        <div class="social">微</div>
+        <div class="social">抖</div>
+        <div class="social">小</div>
+
+    </div>
+
+</footer>
+
+</body>
+</html>
