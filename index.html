@@ -1,118 +1,1129 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🙉</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <!-- 网易云 -->
-    <link rel="stylesheet" href="css/APlayer.mim.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>云裳镜 - AI 3D试衣间</title>
+<link rel="shortcut icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#fff8f8;
+    color:#333;
+    overflow-x:hidden;
+}
+
+/* =========================
+   导航栏
+========================= */
+
+.navbar{
+    width:100%;
+    height:80px;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 60px;
+    box-shadow:0 4px 20px rgba(255,192,203,0.08);
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.logo{
+    font-size:34px;
+    font-weight:700;
+    color:#ff6b9f;
+}
+
+.nav-links{
+    display:flex;
+    gap:40px;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:#666;
+    font-weight:500;
+    transition:0.3s;
+}
+
+.nav-links a:hover{
+    color:#ff5f95;
+}
+
+.user-box{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+/* =========================
+   动态按钮
+========================= */
+
+.vip-btn,
+.primary-btn,
+.try-btn{
+    position:relative;
+    overflow:hidden;
+}
+
+.vip-btn::before,
+.primary-btn::before,
+.try-btn::before{
+    content:'';
+    position:absolute;
+    top:0;
+    left:-120%;
+    width:100%;
+    height:100%;
+    background:linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.45),
+        transparent
+    );
+}
+
+.vip-btn:hover::before,
+.primary-btn:hover::before,
+.try-btn:hover::before{
+    animation:lightMove 1s;
+}
+
+@keyframes lightMove{
+
+    from{
+        left:-120%;
+    }
+
+    to{
+        left:120%;
+    }
+
+}
+
+.vip-btn{
+    background:linear-gradient(135deg,#ff7eb3,#ff4f87);
+    color:white;
+    border:none;
+    padding:12px 24px;
+    border-radius:30px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200');
+    background-size:cover;
+    background-position:center;
+}
+
+/* =========================
+   Hero
+========================= */
+
+.hero{
+    width:100%;
+    padding:60px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.hero-left{
+    width:45%;
+}
+
+.hero-left h1{
+    font-size:72px;
+    line-height:1.1;
+    margin-bottom:25px;
+}
+
+.hero-left h1 span{
+    color:#ff5f95;
+}
+
+.hero-left p{
+    font-size:18px;
+    color:#777;
+    line-height:1.9;
+    margin-bottom:35px;
+}
+
+.hero-btns{
+    display:flex;
+    gap:20px;
+}
+
+.primary-btn{
+    background:linear-gradient(135deg,#ff7eb3,#ff4f87);
+    color:white;
+    border:none;
+    padding:18px 36px;
+    border-radius:18px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.secondary-btn{
+    background:white;
+    border:1px solid #ffd2df;
+    padding:18px 36px;
+    border-radius:18px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.hero-right{
+    width:45%;
+}
+
+.hero-circle{
+    width:500px;
+    height:500px;
+    background:radial-gradient(circle,#ffe3ec,#fff8f8);
+    border-radius:50%;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.hero-circle img{
+    height:600px;
+    object-fit:contain;
+}
+
+/* =========================
+   主布局
+========================= */
+
+.main-container{
+    display:grid;
+    grid-template-columns:280px 1fr 340px;
+    gap:30px;
+    padding:0 60px 60px;
+}
+
+/* =========================
+   卡片
+========================= */
+
+.card{
+    background:white;
+    border-radius:28px;
+    padding:25px;
+    box-shadow:0 10px 30px rgba(255,182,193,0.12);
+
+    transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 30px 60px rgba(255,182,193,0.16);
+}
+
+/* =========================
+   左侧
+========================= */
+
+.profile-card img{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    margin-bottom:15px;
+}
+
+.profile-card h3{
+    margin-bottom:10px;
+}
+
+.data-list{
+    margin-top:25px;
+}
+
+.data-item{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:18px;
+    padding-bottom:12px;
+    border-bottom:1px solid #f5f5f5;
+}
+
+.update-btn{
+    width:100%;
+    margin-top:25px;
+    background:#fff0f5;
+    border:none;
+    height:52px;
+    border-radius:16px;
+    color:#ff5f95;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* =========================
+   中间试衣
+========================= */
+
+.viewer-card{
+    min-height:850px;
+}
+
+.viewer-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:25px;
+}
+
+.viewer-tabs{
+    display:flex;
+    gap:20px;
+}
+
+.viewer-tabs button{
+    border:none;
+    background:none;
+    font-size:16px;
+    font-weight:600;
+    color:#999;
+    cursor:pointer;
+}
+
+.viewer-tabs button.active{
+    color:#ff5f95;
+}
+
+.viewer{
+    width:100%;
+    height:700px;
+    border-radius:24px;
+    background:#fff8fb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+.viewer img{
+    height:95%;
+    transition:0.3s;
+}
+
+/* =========================
+   上传区域
+========================= */
+
+.upload-box{
+    width:100%;
+    height:180px;
+    border:2px dashed #ffc7d8;
+    border-radius:24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    color:#999;
+    cursor:pointer;
+    margin-top:20px;
+}
+
+.plus{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:#fff0f5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:40px;
+    color:#ff5f95;
+    margin-bottom:15px;
+    transition:0.5s;
+}
+
+.upload-box:hover .plus{
+    transform:rotate(180deg) scale(1.08);
+}
+
+/* =========================
+   服装卡片
+========================= */
+
+.clothes-grid{
+    margin-top:30px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.clothes-item{
+    background:#fff7fa;
+    border-radius:18px;
+    overflow:hidden;
+    padding:10px;
+    cursor:pointer;
+    position:relative;
+    transition:0.4s;
+}
+
+.clothes-item:hover{
+    transform:translateY(-6px);
+    box-shadow:0 15px 30px rgba(255,182,193,0.18);
+}
+
+.clothes-item::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        to top,
+        rgba(255,255,255,0.3),
+        transparent
+    );
+    opacity:0;
+    transition:0.4s;
+    border-radius:18px;
+}
+
+.clothes-item:hover::after{
+    opacity:1;
+}
+
+.clothes-item img{
+    width:100%;
+    border-radius:14px;
+    transition:0.5s;
+}
+
+.clothes-item:hover img{
+    transform:scale(1.05);
+}
+
+.try-btn{
+    width:100%;
+    height:58px;
+    border:none;
+    border-radius:18px;
+    margin-top:25px;
+    background:linear-gradient(135deg,#ff7eb3,#ff4f87);
+    color:white;
+    font-size:18px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* =========================
+   半3D轮播试穿记录
+========================= */
+
+.history{
+    padding:0 60px 100px;
+    overflow:hidden;
+}
+
+.history h2{
+    margin-bottom:40px;
+}
+
+.carousel-wrapper{
+    position:relative;
+    width:100%;
+    height:520px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.carousel{
+    position:relative;
+    width:100%;
+    height:100%;
+    perspective:1800px;
+    transform-style:preserve-3d;
+}
+
+.carousel-card{
+    position:absolute;
+
+    width:320px;
+    height:440px;
+
+    left:50%;
+    top:50%;
+
+    border-radius:32px;
+    overflow:hidden;
+
+    background:white;
+
+    box-shadow:
+    0 25px 60px rgba(255,182,193,0.18);
+
+    transition:
+    transform 0.8s cubic-bezier(.2,.8,.2,1),
+    opacity 0.8s ease,
+    filter 0.8s ease;
+
+    cursor:pointer;
+}
+
+.carousel-card img{
+    width:100%;
+    height:340px;
+    object-fit:cover;
+}
+
+.carousel-info{
+    padding:22px;
+}
+
+.carousel-info h3{
+    margin-bottom:8px;
+}
+
+.carousel-info p{
+    color:#999;
+}
+
+/* ===== 半3D位置 ===== */
+
+.carousel-card.active{
+
+    transform:
+    translate(-50%,-50%)
+    translateZ(180px)
+    scale(1);
+
+    z-index:5;
+    opacity:1;
+}
+
+.carousel-card.left{
+
+    transform:
+    translate(-150%,-50%)
+    rotateY(35deg)
+    scale(0.88);
+
+    opacity:0.75;
+    z-index:3;
+    filter:blur(1px);
+}
+
+.carousel-card.far-left{
+
+    transform:
+    translate(-240%,-50%)
+    rotateY(45deg)
+    scale(0.72);
+
+    opacity:0.35;
+    z-index:1;
+    filter:blur(2px);
+}
+
+.carousel-card.right{
+
+    transform:
+    translate(50%,-50%)
+    rotateY(-35deg)
+    scale(0.88);
+
+    opacity:0.75;
+    z-index:3;
+    filter:blur(1px);
+}
+
+.carousel-card.far-right{
+
+    transform:
+    translate(140%,-50%)
+    rotateY(-45deg)
+    scale(0.72);
+
+    opacity:0.35;
+    z-index:1;
+    filter:blur(2px);
+}
+
+/* ===== 中间卡片hover ===== */
+
+.carousel-card.active:hover{
+
+    transform:
+    translate(-50%,-52%)
+    translateZ(180px)
+    scale(1.03);
+}
+
+/* ===== 轮播按钮 ===== */
+
+.carousel-btn{
+    width:58px;
+    height:58px;
+
+    border:none;
+    border-radius:50%;
+
+    background:white;
+
+    box-shadow:
+    0 10px 25px rgba(255,182,193,0.18);
+
+    font-size:24px;
+    cursor:pointer;
+
+    position:absolute;
+    z-index:20;
+
+    transition:0.3s;
+}
+
+.carousel-btn:hover{
+    transform:scale(1.1);
+    background:#fff0f5;
+}
+
+.prev{
+    left:0;
+}
+
+.next{
+    right:0;
+}
+
+/* =========================
+   footer
+========================= */
+
+.footer{
+    width:100%;
+    padding:40px 60px;
+    border-top:1px solid #f3e5ea;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:#999;
+}
+
+.socials{
+    display:flex;
+    gap:15px;
+}
+
+.social{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:#fff0f5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#ff5f95;
+}
+
+/* =========================
+   响应式
+========================= */
+
+@media(max-width:1200px){
+
+.main-container{
+    grid-template-columns:1fr;
+}
+
+.hero{
+    flex-direction:column;
+    text-align:center;
+    gap:50px;
+}
+
+.hero-left,
+.hero-right{
+    width:100%;
+}
+
+.hero-btns{
+    justify-content:center;
+}
+
+}
+
+@media(max-width:768px){
+
+.nav-links{
+    display:none;
+}
+
+.navbar{
+    padding:0 20px;
+}
+
+.hero{
+    padding:30px 20px;
+}
+
+.hero-left h1{
+    font-size:42px;
+}
+
+.main-container{
+    padding:0 20px 40px;
+}
+
+.history{
+    padding:0 20px 40px;
+}
+
+.hero-circle{
+    width:320px;
+    height:320px;
+}
+
+.hero-circle img{
+    height:420px;
+}
+
+.footer{
+    padding:30px 20px;
+    flex-direction:column;
+    gap:20px;
+}
+
+.carousel-card{
+    width:240px;
+    height:360px;
+}
+
+.carousel-card img{
+    height:260px;
+}
+
+.carousel-card.left,
+.carousel-card.right{
+    opacity:0.3;
+}
+
+.carousel-card.far-left,
+.carousel-card.far-right{
+    opacity:0;
+}
+
+}
+
+</style>
 </head>
 
 <body>
-    <div class="row">
-        <!-- 一言 -->
-        <!-- <div class="col-xs-5">
-            <div class="vertical-text site-title" style="float: left;">
-                <h3 tabindex="-1" class="site-title-small">
-                    <a href="/" id="hitokoto" class="a-title"></a>
-                </h3>
-                 <h1 tabindex="-1" class="site-title-large">
-                    <a href="/" id="id" class="a-title">猫与向日葵</a>
-                </h1> 
-            </div>
-        </div> -->
-<!--         <div class="col-xs-12">
-            <img src="images/t1.jpg" style="border-radius: 50%;width: 100px;height: 100px;">
-            <img src="images/t2.jpg" style="border-radius: 50%;width: 100px;height: 100px;">
-            <img src="images/t3.jpg" style="border-radius: 50%;width: 100px;height: 100px;">
-            <img src="images/t4.jpg" style="border-radius: 50%;width: 100px;height: 100px;">
-            <img src="images/t5.jpg" style="border-radius: 50%;width: 100px;height: 100px;">
-            <img src="images/t1.jpg" style="width: 100px;height: 100px;">
-            <img src="images/t2.jpg" style="width: 100px;height: 100px;">
-            <img src="images/t3.jpg" style="width: 100px;height: 100px;">
-            <img src="images/t4.jpg" style="width: 100px;height: 100px;">
-            <img src="images/t5.jpg" style="width: 100px;height: 100px;">
-        </div> -->
-       <div class="col-xs-12">
-            <!--旋转-->
-            <div>
-                <canvas height="400" width="400" id="homepage__find-wordcloud-canvas"style="marign:auto;display: block;"></canvas>
-            </div>
-            <div class="homepage__find-wordcloud-list" id="homepage__find-wordcloud-list" style="/* display: none; */">
-                <ul style="display: none;">
-                    <li>
-                        <a href="javascript:;"> </a>
-                    </li>
-                    <li>
-                        <a href="javascript:;"><img src="images/t1.jpg"></a>
-                    </li>
-                    <li>
-                        <a href="javascript:;"><img src="images/t2.jpg"></a>
-                    </li>
-                    <li>
-                        <a href="javascript:;"><img src="images/t3.jpg"></a>
-                    </li>
-                    <li>
-                        <a href="javascript:;"><img src="images/t4.jpg"></a>
-                    </li>
-                    <li>
-                        <a href="javascript:;"><img src="images/t5.jpg"></a>
-                    </li>
-                    <li>
-                        <a href="javascript:;"><img src="images/t6.jpg"></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-xs-12">
-            <!--一言-->
-            <div style="float: left;height: 70px;">
-                <h3>
-                    <span id="hitokoto" style="font-weight: bolder;font-style: normal;color: #606975;">是啊，皆是如此</span>
-                    <i id="hitofrom"></i>
-                </h3>
-            </div>
-        </div>
-        <div class="col-xs-12">
-            <a href="https://xiyabo.github.io/tupian.html">></a>
-        </div>
-        <div class="col-xs-12">
-            <a href="https://xiyabo.github.io/QQaddress.html">></a>
-        </div>
-        <div class="col-xs-12">
-            <!--网易云-->
-            <div id="player" class="aplayer aplayer-withlist aplayer-fixed" data-id="5349001222" data-server="netease" data-type="playlist" data-order="random" data-fixed="true" data-listfolded="true" data-theme="#2D8CF0" autoplay="true"></div>
-        </div>
+
+<!-- 导航 -->
+
+<div class="navbar">
+
+    <div class="logo">云裳镜</div>
+
+    <div class="nav-links">
+        <a href="login.html">首页</a>
+        <a href="#">我的3D形象</a>
+        <a href="#">AI试衣间</a>
+        <a href="#">穿搭社区</a>
+        <a href="#">灵感收藏</a>
     </div>
 
-    <!-- 一言 -->
-    <script src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
-    <!-- js -->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <!-- 网易云 -->
-    <script src="js/APlayer.min.js"></script>
-    <script src="js/Meting.min.js"></script>
-    <!-- 旋转 -->
-    <script src="js/xuanzhuan.js"></script>
-    <script>
-        window.gon = {};
-        fetch('https://v1.hitokoto.cn')
-    .then(function (res){
-      return res.json();
-    })
-    .then(function (data) {
-      var hitokoto = document.getElementById('hitokoto');
-      hitokoto.innerText = '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' + data.hitokoto;
-      var hitofrom = document.getElementById('hitofrom');
-      hitofrom.innerText = "——" + data.from + '\xa0'; 
-    })
-    .catch(function (err) {
-      console.error(err);
-    })
-    </script>
-</body>
+    <div class="user-box">
+        <button class="vip-btn">升级会员</button>
+        <div class="avatar"></div>
+    </div>
 
+</div>
+
+<!-- hero -->
+
+<section class="hero">
+
+    <div class="hero-left">
+
+        <h1>
+            你的专属<br>
+            <span>AI 3D试衣间</span>
+        </h1>
+
+        <p>
+            上传你的身高、体重与照片，
+            AI自动生成专属3D虚拟形象，
+            在线试穿各种风格服装。
+        </p>
+
+        <div class="hero-btns">
+
+            <button class="primary-btn">
+                创建3D形象
+            </button>
+
+            <button class="secondary-btn">
+                了解更多
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="hero-right">
+
+        <div class="hero-circle">
+
+            <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200">
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- 主区域 -->
+
+<section class="main-container">
+
+    <!-- 左边 -->
+
+    <div class="card profile-card">
+
+        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200">
+
+        <h3>小樱桃</h3>
+
+        <p style="color:#999;">
+            已生成AI 3D形象
+        </p>
+
+        <div class="data-list">
+
+            <div class="data-item">
+                <span>身高</span>
+                <span>165cm</span>
+            </div>
+
+            <div class="data-item">
+                <span>体重</span>
+                <span>50kg</span>
+            </div>
+
+            <div class="data-item">
+                <span>胸围</span>
+                <span>84cm</span>
+            </div>
+
+            <div class="data-item">
+                <span>腰围</span>
+                <span>63cm</span>
+            </div>
+
+            <div class="data-item">
+                <span>臀围</span>
+                <span>88cm</span>
+            </div>
+
+        </div>
+
+        <button class="update-btn">
+            更新身体数据
+        </button>
+
+    </div>
+
+    <!-- 中间 -->
+
+    <div class="card viewer-card">
+
+        <div class="viewer-header">
+
+            <div class="viewer-tabs">
+                <button class="active">3D试衣</button>
+                <button>测量视图</button>
+                <button>骨骼视图</button>
+            </div>
+
+        </div>
+
+        <div class="viewer">
+
+            <img class="main-model"
+            src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1200">
+
+        </div>
+
+    </div>
+
+    <!-- 右边 -->
+
+    <div class="card">
+
+        <h2>上传衣服图片</h2>
+
+        <div class="upload-box">
+
+            <div class="plus">+</div>
+
+            <p>点击上传服装图片</p>
+
+        </div>
+
+        <div class="clothes-grid">
+
+            <div class="clothes-item">
+                <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600">
+            </div>
+
+            <div class="clothes-item">
+                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=600">
+            </div>
+
+            <div class="clothes-item">
+                <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=600">
+            </div>
+
+            <div class="clothes-item">
+                <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=600">
+            </div>
+
+        </div>
+
+        <button class="try-btn">
+            立即试穿
+        </button>
+
+    </div>
+
+</section>
+
+<!-- 半3D轮播 -->
+
+<section class="history">
+
+    <h2>我的试穿记录</h2>
+
+    <div class="carousel-wrapper">
+
+        <button class="carousel-btn prev">
+            ←
+        </button>
+
+        <div class="carousel">
+
+            <div class="carousel-card active">
+
+                <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=800">
+
+                <div class="carousel-info">
+                    <h3>甜美连衣裙</h3>
+                    <p>AI匹配度 96%</p>
+                </div>
+
+            </div>
+
+            <div class="carousel-card">
+
+                <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800">
+
+                <div class="carousel-info">
+                    <h3>法式上衣</h3>
+                    <p>AI匹配度 91%</p>
+                </div>
+
+            </div>
+
+            <div class="carousel-card">
+
+                <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800">
+
+                <div class="carousel-info">
+                    <h3>轻熟风穿搭</h3>
+                    <p>AI匹配度 94%</p>
+                </div>
+
+            </div>
+
+            <div class="carousel-card">
+
+                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=800">
+
+                <div class="carousel-info">
+                    <h3>学院风穿搭</h3>
+                    <p>AI匹配度 90%</p>
+                </div>
+
+            </div>
+
+            <div class="carousel-card">
+
+                <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=800">
+
+                <div class="carousel-info">
+                    <h3>高级感外套</h3>
+                    <p>AI匹配度 98%</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <button class="carousel-btn next">
+            →
+        </button>
+
+    </div>
+
+</section>
+
+<!-- footer -->
+
+<footer class="footer">
+
+    <div>
+        © 2026 MyFit AI Fashion
+    </div>
+
+    <div class="socials">
+
+        <div class="social">微</div>
+        <div class="social">抖</div>
+        <div class="social">小</div>
+
+    </div>
+
+</footer>
+
+<script>
+
+/* =========================
+   衣服切换
+========================= */
+
+const clothes=document.querySelectorAll('.clothes-item img');
+
+const viewer=document.querySelector('.main-model');
+
+clothes.forEach(item=>{
+
+    item.addEventListener('click',()=>{
+
+        viewer.style.opacity='0';
+
+        setTimeout(()=>{
+
+            viewer.src=item.src;
+
+            viewer.style.opacity='1';
+
+        },250);
+
+    });
+
+});
+
+/* =========================
+   半3D轮播逻辑
+========================= */
+
+const cards=document.querySelectorAll('.carousel-card');
+
+const prevBtn=document.querySelector('.prev');
+
+const nextBtn=document.querySelector('.next');
+
+let current=0;
+
+function updateCarousel(){
+
+    cards.forEach(card=>{
+
+        card.className='carousel-card';
+
+    });
+
+    const total=cards.length;
+
+    const left=(current-1+total)%total;
+    const farLeft=(current-2+total)%total;
+
+    const right=(current+1)%total;
+    const farRight=(current+2)%total;
+
+    cards[current].classList.add('active');
+
+    cards[left].classList.add('left');
+
+    cards[farLeft].classList.add('far-left');
+
+    cards[right].classList.add('right');
+
+    cards[farRight].classList.add('far-right');
+
+}
+
+/* 下一张 */
+
+nextBtn.addEventListener('click',()=>{
+
+    current=(current+1)%cards.length;
+
+    updateCarousel();
+
+});
+
+/* 上一张 */
+
+prevBtn.addEventListener('click',()=>{
+
+    current=(current-1+cards.length)%cards.length;
+
+    updateCarousel();
+
+});
+
+/* 点击切换 */
+
+cards.forEach((card,index)=>{
+
+    card.addEventListener('click',()=>{
+
+        current=index;
+
+        updateCarousel();
+
+    });
+
+});
+
+/* 初始化 */
+
+updateCarousel();
+
+</script>
+
+</body>
 </html>
