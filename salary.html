@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>诚信志远果业工资系统</title>
+
+<style>
+body{
+    font-family: Arial;
+    background:#f5f7fa;
+    padding:20px;
+}
+
+h1{text-align:center;}
+
+.container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:15px;
+    max-width:1100px;
+    margin:auto;
+}
+
+.card{
+    background:#fff;
+    padding:15px;
+    border-radius:12px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+.tag{
+    font-weight:bold;
+    color:#2b6fff;
+}
+
+input{
+    width:100%;
+    padding:8px;
+    margin:5px 0;
+    border:1px solid #ddd;
+    border-radius:8px;
+}
+
+.tip{
+    font-size:13px;
+    margin-top:6px;
+    padding:6px;
+    background:#eef5ff;
+    border-radius:8px;
+    color:#333;
+}
+
+.result{
+    margin-top:10px;
+    background:#f9f9f9;
+    padding:10px;
+    border-radius:8px;
+    font-size:13px;
+}
+
+.money{
+    font-size:18px;
+    color:green;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🍉 诚信志远果业工资计算系统</h1>
+
+<div class="container">
+
+<div class="card">
+<div class="tag">员工 A</div>
+
+<input type="number" placeholder="基础工资" oninput="calc()">
+<input type="number" placeholder="工作天数" oninput="calc()">
+<input type="number" placeholder="抖音提成" oninput="calc()">
+
+<div class="tip">请输入数据</div>
+<div class="result">工资结果</div>
+</div>
+
+<div class="card">
+<div class="tag">员工 B</div>
+
+<input type="number" placeholder="基础工资" oninput="calc()">
+<input type="number" placeholder="工作天数" oninput="calc()">
+<input type="number" placeholder="抖音提成" oninput="calc()">
+
+<div class="tip">请输入数据</div>
+<div class="result">工资结果</div>
+</div>
+
+<div class="card">
+<div class="tag">员工 C</div>
+
+<input type="number" placeholder="基础工资" oninput="calc()">
+<input type="number" placeholder="工作天数" oninput="calc()">
+<input type="number" placeholder="抖音提成" oninput="calc()">
+
+<div class="tip">请输入数据</div>
+<div class="result">工资结果</div>
+</div>
+
+<div class="card">
+<div class="tag">员工 D</div>
+
+<input type="number" placeholder="基础工资" oninput="calc()">
+<input type="number" placeholder="工作天数" oninput="calc()">
+<input type="number" placeholder="抖音提成" oninput="calc()">
+
+<div class="tip">请输入数据</div>
+<div class="result">工资结果</div>
+</div>
+
+</div>
+
+<script>
+function calc(){
+
+    let cards = document.getElementsByClassName("card");
+
+    for(let i=0;i<4;i++){
+
+        let inputs = cards[i].getElementsByTagName("input");
+
+        let base = Number(inputs[0].value) || 0;
+        let days = Number(inputs[1].value) || 0;
+        let bonus = Number(inputs[2].value) || 0;
+
+        let tipBox = cards[i].getElementsByClassName("tip")[0];
+        let resultBox = cards[i].getElementsByClassName("result")[0];
+
+        let result = base;
+
+        // 📅 出勤逻辑
+        if(days < 28){
+            let diff = 28 - days;
+            let deduct = diff * (base / 28);
+            result -= deduct;
+
+            tipBox.innerHTML = "❌ 缺勤 " + diff + " 天，扣款 " + deduct.toFixed(2) + " 元";
+        }
+        else if(days > 28){
+            let extra = days - 28;
+            let add = extra * 100;
+            result += add;
+
+            tipBox.innerHTML = "✅ 超出 " + extra + " 天，奖励 " + add.toFixed(2) + " 元";
+        }
+        else{
+            tipBox.innerHTML = "✔ 正常出勤 28 天";
+        }
+
+        // 🎥 抖音提成
+        result += bonus;
+
+        resultBox.innerHTML =
+            "基础工资：" + base + "<br>" +
+            "工作天数：" + days + "<br>" +
+            "抖音提成：" + bonus + "<br>" +
+            "<div class='money'>实发工资：" + result.toFixed(2) + " 元</div>";
+    }
+}
+</script>
+
+</body>
+</html>
