@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>诚信志远果业记账系统</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f5f6f8;color:#222;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
+.container{max-width:900px;margin:0 auto;padding:20px 16px 50px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+h1{font-size:24px;margin:0;font-weight:700}
+.date-box{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px}
+input{font:inherit}
+.date-box input{border:0;outline:0;background:transparent;font-size:15px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.card{background:#fff;border-radius:16px;padding:17px;box-shadow:0 3px 14px rgba(0,0,0,.05)}
+.card .label{font-size:13px;color:#777;margin-bottom:7px}
+.card .value{font-size:22px;font-weight:700}
+.card small{display:block;color:#999;margin-top:5px}
+.section{background:#fff;border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 3px 14px rgba(0,0,0,.05)}
+.section-title{font-size:18px;font-weight:700;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.item{border:1px solid #e8e9ec;border-radius:12px;padding:12px}
+.item label{display:block;font-size:14px;color:#555;margin-bottom:8px}
+.item input{width:100%;border:0;outline:0;font-size:20px;font-weight:600;background:transparent}
+.item input::placeholder{color:#c7c7c7}
+.fee-row{margin-top:14px;background:#f7f8fa;border-radius:12px;padding:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.fee-row span{color:#777;font-size:14px}
+.fee-row strong{font-size:16px}
+.total{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid #eee}
+.total strong{font-size:22px}
+.actions{display:flex;gap:10px}
+button{border:0;border-radius:12px;padding:13px 20px;font-size:15px;cursor:pointer}
+.primary{background:#222;color:#fff;flex:1}
+.secondary{background:#eef0f3;color:#333}
+.history{margin-top:16px}
+.history-row{border:1px solid #eee;border-radius:12px;padding:13px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.history-date{font-weight:600}
+.history-info{font-size:13px;color:#777;margin-top:4px}
+.history-actions button{padding:7px 10px;font-size:12px}
+.empty{text-align:center;color:#999;padding:20px}
+@media(max-width:600px){
+ .container{padding:14px 12px 35px}
+ header{align-items:flex-start;gap:10px;flex-direction:column}
+ h1{font-size:22px}
+ .date-box{width:100%}.date-box input{width:100%}
+ .cards{grid-template-columns:1fr 1fr}
+ .cards .card:last-child{grid-column:1/-1}
+ .grid{grid-template-columns:1fr}
+ .section{padding:16px}
+ .item input{font-size:19px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>每日经营记账</h1>
+  <div class="date-box"><input id="date" type="date"></div>
+</header>
+
+<div class="cards">
+  <div class="card"><div class="label">今日收入</div><div class="value" id="incomeTotal">¥0.00</div></div>
+  <div class="card"><div class="label">今日支出</div><div class="value" id="expenseTotal">¥0.00</div></div>
+  <div class="card"><div class="label">鼎付通手续费</div><div class="value" id="feeTotal">¥0.00</div><small>按鼎付通收入 × 0.003</small></div>
+</div>
+
+<section class="section">
+ <div class="section-title">收入信息</div>
+ <div class="grid">
+  <div class="item"><label>现金收入</label><input data-field="cash" type="number" min="0" step="0.01" placeholder="0.00"></div>
+  <div class="item"><label>鼎付通收入</label><input data-field="ding" type="number" min="0" step="0.01" placeholder="0.00"></div>
+  <div class="item"><label>手机收入</label><input data-field="mobile" type="number" min="0" step="0.01" placeholder="0.00"></div>
+  <div class="item"><label>会员收入</label><input data-field="member" type="number" min="0" step="0.01" placeholder="0.00"></div>
+  <div class="item"><label>抖音收入</label><input data-field="douyin" type="number" min="0" step="0.01" placeholder="0.00"></div>
+  <div class="item"><label>美团收入</label><input data-field="meituan" type="number" min="0" step="0.01" placeholder="0.00"></div>
+  <div class="item"><label>淘宝收入</label><input data-field="taobao" type="number" min="0" step="0.01" placeholder="0.00"></div>
+ </div>
+ <div class="fee-row">
+   <span>鼎付通手续费：<strong id="dingFee">¥0.00</strong></span>
+   <span>鼎付通实际收入：<strong id="dingActual">¥0.00</strong></span>
+ </div>
+ <div class="total"><span>收入合计</span><strong id="incomeTotal2">¥0.00</strong></div>
+</section>
+
+<section class="section">
+ <div class="section-title">支出 / 调货</div>
+ <div class="grid">
+  <div class="item"><label>进货支出</label><input data-field="purchase" type="number" min="0" step="0.01" placeholder="0.00"></div>
+  <div class="item"><label>调货支出</label><input data-field="transferOut" type="number" min="0" step="0.01" placeholder="0.00"></div>
+  <div class="item"><label>调货收入</label><input data-field="transferIn" type="number" min="0" step="0.01" placeholder="0.00"></div>
+ </div>
+ <div class="total"><span>支出合计</span><strong id="expenseTotal2">¥0.00</strong></div>
+</section>
+
+<section class="section">
+ <div class="section-title">余额计算</div>
+ <div class="grid">
+  <div class="item">
+   <label>余额总数（填写）</label>
+   <input data-field="balanceStart" type="number" step="0.01" placeholder="0.00">
+  </div>
+  <div class="item">
+   <label>余额（自动计算）</label>
+   <input id="balanceResult" type="text" value="¥0.00" readonly>
+  </div>
+ </div>
+ <div class="fee-row">
+   <span>计算公式：余额总数 + 今日收入 + 调货收入 − 进货支出 − 调货支出</span>
+ </div>
+</section>
+
+<div class="actions">
+ <button class="secondary" id="clearBtn">清空</button>
+ <button class="primary" id="saveBtn">保存当天数据</button>
+</div>
+
+<section class="section history">
+ <div class="section-title">历史记录</div>
+ <div id="historyList"><div class="empty">暂无记录</div></div>
+</section>
+</div>
+
+<script>
+const fields = ["cash","ding","mobile","member","douyin","meituan","taobao","purchase","transferOut","transferIn","balanceStart"];
+const dateInput = document.getElementById("date");
+const STORAGE = "daily_business_records_v1";
+
+function money(n){ n=Number(n||0); n=Math.round((n+Number.EPSILON)*10)/10; return "¥"+n.toLocaleString("zh-CN",{minimumFractionDigits:1,maximumFractionDigits:1}); }
+function getData(){
+  const d={};
+  fields.forEach(f=>d[f]=Number(document.querySelector(`[data-field="${f}"]`).value)||0);
+  return d;
+}
+function setData(d){
+  fields.forEach(f=>document.querySelector(`[data-field="${f}"]`).value=d?.[f]??"");
+  calculate();
+}
+function calculate(){
+  const d=getData();
+  const fee=d.ding*0.003;
+  const actualDing=d.ding-fee;
+  const income=d.cash+actualDing+d.mobile+d.member+d.douyin+d.meituan+d.taobao;
+  const expense=d.purchase+d.transferOut;
+  const balance=d.balanceStart+income+d.transferIn-d.purchase-d.transferOut;
+  document.getElementById("balanceResult").value=money(balance);
+  document.getElementById("dingFee").textContent=money(fee);
+  document.getElementById("dingActual").textContent=money(actualDing);
+  document.getElementById("incomeTotal").textContent=money(income);
+  document.getElementById("incomeTotal2").textContent=money(income);
+  document.getElementById("expenseTotal").textContent=money(expense);
+  document.getElementById("expenseTotal2").textContent=money(expense);
+  document.getElementById("feeTotal").textContent=money(fee);
+}
+function loadRecords(){return JSON.parse(localStorage.getItem(STORAGE)||"{}");}
+function saveRecords(r){localStorage.setItem(STORAGE,JSON.stringify(r));}
+function saveCurrent(){
+  const r=loadRecords();
+  r[dateInput.value]=getData();
+  saveRecords(r);
+  renderHistory();
+  alert("当天数据已保存");
+}
+function loadDate(){
+  const r=loadRecords();
+  setData(r[dateInput.value]||{});
+}
+function renderHistory(){
+  const list=document.getElementById("historyList");
+  const r=loadRecords();
+  const dates=Object.keys(r).sort().reverse();
+  if(!dates.length){list.innerHTML='<div class="empty">暂无记录</div>';return;}
+  list.innerHTML=dates.map(date=>{
+    const d=r[date];
+    const fee=d.ding*0.003;
+    const income=d.cash+d.ding-fee+d.mobile+d.member+d.douyin+d.meituan+d.taobao;
+    const expense=d.purchase+d.transferOut;
+    const balance=d.balanceStart+income+d.transferIn-d.purchase-d.transferOut;
+    return `<div class="history-row">
+      <div><div class="history-date">${date}</div>
+      <div class="history-info">收入 ${money(income)}　支出 ${money(expense)}　调货收入 ${money(d.transferIn)}　余额 ${money(balance)}</div></div>
+      <div class="history-actions">
+       <button class="secondary" onclick="editRecord('${date}')">编辑</button>
+       <button class="secondary" onclick="deleteRecord('${date}')">删除</button>
+      </div>
+    </div>`;
+  }).join("");
+}
+function editRecord(date){dateInput.value=date;loadDate();window.scrollTo({top:0,behavior:"smooth"});}
+function deleteRecord(date){
+  if(!confirm("确定删除 "+date+" 的记录吗？"))return;
+  const r=loadRecords();delete r[date];saveRecords(r);renderHistory();
+  if(date===dateInput.value)setData({});
+}
+document.querySelectorAll("input[data-field]").forEach(i=>i.addEventListener("input",calculate));
+dateInput.addEventListener("change",loadDate);
+document.getElementById("saveBtn").addEventListener("click",saveCurrent);
+document.getElementById("clearBtn").addEventListener("click",()=>{if(confirm("确定清空当前页面的数据吗？"))setData({});});
+dateInput.value=new Date().toISOString().slice(0,10);
+loadDate();
+renderHistory();
+calculate();
+</script>
+</body>
+</html>
